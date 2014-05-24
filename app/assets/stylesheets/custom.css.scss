@@ -3,6 +3,24 @@
 /* mixins, variables, etc. */
 $grayMediumLight: #eaeaea;
 
+@mixin box_sizing {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+/* miscellaneous */
+/* debug_dump class */
+.debug_dump {
+	clear: both;
+	float: left;
+	width: 100%;
+	margin-top: 45px;
+	/* include and expand named mixin */
+	@include box_sizing;
+	
+}
+
 /* universal */
 html {
 	overflow-y: scroll;
@@ -95,4 +113,6 @@ footer {
 	  float: left;
 	  margin-left: 10px;
   }
+  
+ 
 }
