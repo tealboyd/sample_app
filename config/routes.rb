@@ -1,6 +1,8 @@
 SampleApp::Application.routes.draw do
   
-  get "users/new"
+  # enable all actions for a RESTful Users resource
+  resources :users
+  
   root 'static_pages#home'
   #get "static_pages/help"
   #get "static_pages/about"
