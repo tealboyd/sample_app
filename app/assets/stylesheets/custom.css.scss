@@ -10,7 +10,7 @@ $grayMediumLight: #eaeaea;
 }
 
 /* miscellaneous */
-/* debug_dump class */
+/* debug_dump .class */
 .debug_dump {
 	clear: both;
 	float: left;
@@ -19,6 +19,37 @@ $grayMediumLight: #eaeaea;
 	/* include and expand named mixin */
 	@include box_sizing;
 	
+}
+
+/* sidebar */
+aside {
+	section {
+		padding: 10px 0;
+		border-top: 1px solid $grayLighter;
+		/* & is a reference to parent section */
+		&:first-child {
+			border: 0;
+			padding-top: 0;
+		};
+	}
+	span {
+		display: block;
+		margin-bottom: 3px;
+		line-height: 1;
+	}
+	h1 {
+		font-size: 1.4em;
+		text-align: left;
+		letter-spacing: -1px;
+		margin-bottom: 3px;
+		margin-top: 0px;
+	}
+}
+
+/* class gravatar */
+.gravatar {
+	float: left;
+	margin-right: 10px;
 }
 
 /* universal */
@@ -40,6 +71,7 @@ textarea {
 
 .center {
 	text-align: center;
+	/* nest in the h1 element */
 	h1 {
 		margin-bottom: 10px;
 	}
@@ -72,7 +104,7 @@ p {
 	line-height: 1.7em;
 }
 
-/* header */
+/* header #logo is id*/
 #logo {
 	float: left;
 	margin-right: 10px;
@@ -83,6 +115,7 @@ p {
 	padding-top: 9px;
 	font-weight: bold;
 	line-height: 1;
+	/* &:hover - & references the parent #logo */
 	&:hover {
 		color: white;
 		text-decoration: none;
@@ -112,6 +145,20 @@ footer {
   li {
 	  float: left;
 	  margin-left: 10px;
+  }
+  
+  /* forms TODO : WHY NOT WORKING*/
+  #error_explanation {
+	  color: #f00;
+	  ul {
+		  list-style: none;
+		  margin: 0 0 18px 0;
+	  }
+  }
+  
+  .field_with_errors {
+	  @extend .control-group;
+	  @extend .error;
   }
   
  
