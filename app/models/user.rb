@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+  
+  # set cardinality to microposts
+  has_many :microposts, dependent: :destroy
+  
   # set email to lowercase to ensure uniqueness
   before_save { self.email = email.downcase }
   # before a user is created, create a remember token
@@ -19,6 +23,11 @@ class User < ActiveRecord::Base
   
   # has secure password, entire framwork rails 4 
   has_secure_password
+  
+  def feed
+    # preliminary
+    Micropost.where("user_id = ?", id)
+  end
   
   # class methods
   def User.new_remember_token
