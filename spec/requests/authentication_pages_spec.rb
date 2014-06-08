@@ -3,6 +3,32 @@ require 'spec_helper'
 describe "Authentication" do
   subject { page }
   
+  describe "in the Users controller" do
+    
+    let(:user) {FactoryGirl.create(:user) }        
+   
+    describe "visiting the edit page" do
+      before { visit edit_user_path(user) }
+      it { should have_title('Sign in') }
+    end
+    
+    describe "submitting to the update action" do
+      before { patch user_path(user) }
+      specify { expect(response).to redirect_to(signin_path) }
+    end
+    
+    describe "visiting the following pages" do
+      before { visit following_user_path(user) }
+      it { should have_title('Sign in') }
+    end
+    
+    describe "visiting the followers page" do
+      before { visit followers_user_path(user) }
+      it { should have_title('Sign in') }
+    end
+    
+  end
+  
   describe "signin page" do
     before { visit signin_path }
     
@@ -43,6 +69,8 @@ describe "Authentication" do
       describe "Authorization" do
         let(:user) { FactoryGirl.create(:user) }
         
+ 
+        
         describe "as non-admin user" do
           let(:user) { FactoryGirl.create(:user) }
           let(:non_admin) { FactoryGirl.create(:user) }
@@ -56,18 +84,7 @@ describe "Authentication" do
         end
 
         
-        describe "in the Users controller" do        
-         
-          describe "visiting the edit page" do
-            before { visit edit_user_path(user) }
-            it { should have_title('Sign in') }
-          end
-          
-          describe "submitting to the update action" do
-            before { patch user_path(user) }
-            specify { expect(response).to redirect_to(signin_path) }
-          end
-        end
+
         
         describe "as wrong user" do
           let(:user) { FactoryGirl.create(:user) }
@@ -108,6 +125,19 @@ describe "Authentication" do
         
         describe "for non-signed in users" do
           let(:user) { FactoryGirl.create(:user) }
+          
+          describe "In the Relationships controller" do
+            describe "submitting to the create action" do
+              before { post relationships_path }
+              specify { expect(response).to redirect_to(signin_path) }
+            end
+            
+            describe "submitting to the destroy controller" do
+              before { delete relationship_path(1) }
+              specify { expect(response).to redirect_to(signin_path) }
+            end
+          end
+            
           before do
             visit edit_user_path(user)
             fill_in "Email", with: user.email

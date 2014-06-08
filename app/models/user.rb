@@ -2,9 +2,17 @@ class User < ActiveRecord::Base
   
   # set cardinality to microposts
   has_many :microposts, dependent: :destroy
+  has_many :relationships, foreign_key: "follower_id", dependent: :destroy
+  # the source: of the followed users is the set of 'followed' ids
+  has_many :followed_users, through: :relationships, source: :followed
+  has_many :reverse_relationships, foreign_key: "followed_id",
+                                  class_name: "Relationship",
+                                  dependent: :destroy
+  has_many :followers, through: :reverse_relationships, source: :follower
   
   # set email to lowercase to ensure uniqueness
   before_save { self.email = email.downcase }
+  
   # before a user is created, create a remember token
   before_create :create_remember_token
   
@@ -25,8 +33,19 @@ class User < ActiveRecord::Base
   has_secure_password
   
   def feed
-    # preliminary
-    Micropost.where("user_id = ?", id)
+    Micropost.from_users_followed_by(self)
+  end
+  
+  def following?(other_user)
+    self.relationships.find_by(followed_id: other_user.id)
+  end
+  
+  def follow!(other_user)
+    self.relationships.create!(followed_id: other_user.id)
+  end
+  
+  def unfollow!(other_user)
+    self.relationships.find_by(followed_id: other_user.id).destroy
   end
   
   # class methods
